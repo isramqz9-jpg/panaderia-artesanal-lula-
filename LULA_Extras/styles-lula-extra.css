@@ -1,0 +1,73 @@
+/* LULA EXTRAS — pega este bloque al FINAL de styles.css */
+/* Logo original de LULA */
+.brand .brand-mark {
+  width: 112px;
+  height: 60px;
+  flex: 0 0 112px;
+  border: 0;
+  border-radius: 0;
+  display: block;
+  font-size: 0;
+  background: url("logo-lula.jpeg") center / contain no-repeat;
+}
+.brand .brand-copy { display: none; }
+
+/* Sticker de donita de la marca en cada tarjeta del catálogo y favoritos */
+.product-image { position: relative; }
+.product-image::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  right: 9px;
+  bottom: 9px;
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  border: 2px solid #fffaf5;
+  background: #f1ded7 url("donita-lula.jpeg") center / cover no-repeat;
+  box-shadow: 0 3px 10px #392c2730;
+  pointer-events: none;
+}
+
+/* Ubicación */
+.lula-location {
+  padding: 82px 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+.lula-location-inner {
+  width: min(1120px, 86%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+  align-items: center;
+}
+.lula-location h2 { margin: 0 0 18px; }
+.lula-location p { color: var(--muted); font-size: 12px; line-height: 1.9; }
+.lula-location-card {
+  min-height: 250px;
+  padding: 28px;
+  background: var(--rose-pale);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+.lula-location-pin { font-size: 32px; color: var(--rose-deep); }
+.lula-location-card h3 { font-size: 25px; margin: 0; }
+.lula-location-card a {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 13px 17px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 10px;
+}
+@media (max-width: 720px) {
+  .brand .brand-mark { width: 86px; height: 48px; flex-basis: 86px; }
+  .lula-location { padding: 62px 0; }
+  .lula-location-inner { width: 88%; grid-template-columns: 1fr; gap: 22px; }
+}
