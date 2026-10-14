@@ -105,16 +105,75 @@ $("#cartItems").addEventListener("click",event=>{const qty=event.target.closest(
 $("#openCart").addEventListener("click",openCart);$("#goCart").addEventListener("click",openCart);$("#closeCart").addEventListener("click",closeCart);
 $("#cartModal").addEventListener("click",event=>{if(event.target===$("#cartModal"))closeCart()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!$("#cartModal").classList.contains("hidden"))closeCart()});
 $("#checkoutForm").addEventListener("submit",event=>{
-  event.preventDefault();$("#formMessage").textContent="";
-  if(cartQuantity()===0){$("#formMessage").textContent="Agrega al menos un producto antes de enviar tu pedido.";return}
-  const name=$("#customerName").value.trim(),phone=$("#customerPhone").value.trim(),notes=$("#orderNotes").value.trim();
-  if(name.length<2){$("#formMessage").textContent="Escribe tu nombre para preparar el mensaje.";$("#customerName").focus();return}
-  if(phone&&!/^[+\d\s()-]{7,20}$/.test(phone)){ $("#formMessage").textContent="Revisa el teléfono: usa números y, si quieres, +, espacios o guiones.";$("#customerPhone").focus();return }
-  const lines=["¡Hola, LULA! ♡","Quisiera consultar este pedido:",""];
-  for(const [id,qty] of state.cart){const p=PRODUCTS.find(item=>item.id===id);lines.push(`• ${qty} × ${p.name} — ${money(p.price*qty)}`)}
-  lines.push("",`Total estimado: ${money(cartTotal())}`,"",`Nombre: ${name}`);if(phone)lines.push(`Teléfono: ${phone}`);if(notes)lines.push(`Notas: ${notes}`);lines.push("","¿Me confirman disponibilidad, precio final y opciones de entrega? ¡Gracias!");
-  if(openWhatsApp(lines.join("\n")))$("#formMessage").textContent="Se abrió WhatsApp con el mensaje preparado. Revísalo y envíalo desde WhatsApp para completar la consulta.";
+
+$("#checkoutForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const message = $("#formMessage");
+  const button = $("#checkoutButton");
+
+  message.textContent = "";
+
+  if (cartQuantity() === 0) {
+    message.textContent = "Agrega al menos un producto antes de pagar.";
+    return;
+  }
+
+  const name = $("#customerName").value.trim();
+  const phone = $("#customerPhone").value.trim();
+  const notes = $("#orderNotes").value.trim();
+
+  if (name.length < 2) {
+    message.textContent = "Escribe tu nombre.";
+    $("#customerName").focus();
+    return;
+  }
+
+  if (phone && !/^[+\d\s()-]{7,20}$/.test(phone)) {
+    message.textContent = "Revisa el número de teléfono.";
+    $("#customerPhone").focus();
+    return;
+  }
+
+  const productos = [...state.cart.entries()].map(([id, cantidad]) => ({
+    id,
+    cantidad
+  }));
+
+  button.disabled = true;
+  button.textContent = "Preparando pago...";
+
+  try {
+    const respuesta = await fetch(
+      "https://TU-SERVIDOR/api/crear-pago",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productos,
+          cliente: { nombre: name, telefono: phone, notas: notes }
+        })
+      }
+    );
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok || !resultado.checkoutUrl) {
+      throw new Error(
+        resultado.error || "No se pudo iniciar el pago."
+      );
+    }
+
+    window.location.href = resultado.checkoutUrl;
+
+  } catch (error) {
+    message.textContent =
+      error.message || "Ocurrió un error. Intenta nuevamente.";
+    button.disabled = false;
+    button.textContent = "Pagar con Mercado Pago";
+  }
 });
+
 $("#contactWhatsapp").addEventListener("click",()=>{openWhatsApp("¡Hola, LULA! ♡ Quisiera información sobre sus productos, disponibilidad y pedidos, por favor.")});
 $("#themeToggle").addEventListener("click",()=>{state.theme=state.theme==="dark"?"light":"dark";applyTheme();saveState()});
 $("#menuToggle").addEventListener("click",()=>{const nav=$("#mainNav"),opened=nav.classList.toggle("open");$("#menuToggle").setAttribute("aria-expanded",String(opened));$("#menuToggle").textContent=opened?"×":"☰"});
@@ -230,6 +289,7 @@ const menuLulaPorSecciones = {
     { nombre: "Cappuccino", precio: 50 },
     { nombre: "Chocolate caliente", precio: 48 }
   ]
+  
 };
+renderAll();)
 
-renderAll();
