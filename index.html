@@ -388,5 +388,36 @@
 
   <div class="modal-backdrop hidden" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><div class="cart-modal"><div class="modal-heading"><div><p class="eyebrow">TU SELECCIÓN</p><h2 id="cartTitle">Tu <em>pedido.</em></h2></div><button class="icon-button modal-close" id="closeCart" aria-label="Cerrar pedido">×</button></div><div class="cart-items" id="cartItems"></div><div class="cart-empty hidden" id="cartEmpty">Tu pedido está vacío por ahora. ♡</div><div class="cart-total"><span>Total estimado</span><strong id="cartTotal">$0.00</strong></div><p class="cart-disclaimer">El total es orientativo y debe confirmarse con LULA. Disponibilidad, entrega y pago se acuerdan por mensaje.</p><form id="checkoutForm" class="checkout-form"><label for="customerName">Tu nombre</label><input id="customerName" name="customerName" maxlength="60" placeholder="¿Cómo te llamas?" required><label for="customerPhone">Teléfono de contacto (opcional)</label><input id="customerPhone" name="customerPhone" inputmode="tel" maxlength="20" placeholder="Tu número"><label for="orderNotes">Notas para tu pedido (opcional)</label><textarea id="orderNotes" name="orderNotes" rows="2" maxlength="400" placeholder="Sabores, cantidad, fecha de entrega..."></textarea><button class="button button-dark checkout-button" id="checkoutButton" type="submit">Enviar pedido por WhatsApp ↗</button><p class="form-message" id="formMessage" aria-live="polite"></p></form></div></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  
+<!-- ===== PAGOS CON TARJETA LULA ===== -->
+<section class="lula-pago-tarjeta" id="pago-tarjeta">
+  <div class="lula-pago-contenido">
+    <span class="lula-pago-icono">♡</span>
+    <p class="eyebrow">PAGO SEGURO</p>
+    <h2>Paga tu pedido <em>con tarjeta.</em></h2>
+    <p>
+      Elige pagar de forma segura mediante Mercado Pago.
+      Podrás consultar los medios de pago disponibles al continuar.
+    </p>
+
+    <a
+      class="lula-pago-boton"
+      id="lulaBotonPago"
+      href="https://www.mercadopago.com.mx/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Continuar al pago ↗
+    </a>
+
+    <small>
+      Para habilitar cobros reales, sustituye el enlace de ejemplo
+      por tu enlace de pago de Mercado Pago.
+    </small>
+  </div>
+</section>
+<!-- ===== FIN PAGOS CON TARJETA ===== -->
+
 </body>
 </html>
